@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/navi2code/myEA/contracts/message-envelope.schema.json",
+  "title": "MessageEnvelope",
+  "description": "Standard envelope wrapping every ingested item flowing through the Virtual EA pipeline.",
+  "type": "object",
+  "required": ["run_id", "source", "received_at", "payload"],
+  "properties": {
+    "run_id": { "type": "string", "description": "Correlation id for the full pipeline run." },
+    "source": { "type": "string", "enum": ["gmail", "calendar", "scheduled", "manual"] },
+    "received_at": { "type": "string", "format": "date-time" },
+    "dedupe_key": { "type": "string", "description": "Stable hash used for idempotent processing." },
+    "metadata": { "type": "object", "additionalProperties": true },
+    "payload": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}
