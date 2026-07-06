@@ -1,0 +1,52 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "https://github.com/navi2code/myEA/contracts/normalized-email.schema.json",
+"title": "NormalizedEmail",
+"description": "Normalized representation of an ingested Gmail Primary message after HTML stripping, quote trimming, metadata annotation and attachment staging.",
+"type": "object",
+"required": ["schema_version", "run_id", "correlation_id", "dedupe_key", "message_id", "thread_id", "received_at", "from", "subject", "body_text"],
+"additionalProperties": false,
+"properties": {
+"schema_version": { "type": "string", "const": "1.0.0" },
+"run_id": { "type": "string" },
+"correlation_id": { "type": "string" },
+"dedupe_key": { "type": "string", "description": "Stable idempotency key, e.g. gmail:<message_id>." },
+"message_id": { "type": "string", "description": "Gmail message id." },
+"thread_id": { "type": "string" },
+"rfc822_message_id": { "type": ["string", "null"] },
+"received_at": { "type": "string", "format": "date-time" },
+"category": { "type": "string", "enum": ["primary"], "description": "Promotions, Social and Spam are excluded at ingest." },
+"from": {
+"type": "object",
+"required": ["email"],
+"additionalProperties": false,
+"properties": {
+"name": { "type": ["string", "null"] },
+"email": { "type": "string", "format": "email" }
+}
+},
+"to": { "type": "array", "items": { "type": "string" } },
+"cc": { "type": "array", "items": { "type": "string" } },
+"subject": { "type": "string" },
+"body_text": { "type": "string", "description": "Plaintext body with HTML stripped and quoted history trimmed." },
+"snippet": { "type": ["string", "null"] },
+"labels": { "type": "array", "items": { "type": "string" } },
+"has_attachments": { "type": "boolean" },
+"attachments": {
+"type": "array",
+"items": {
+"type": "object",
+"required": ["filename", "mime_type", "gcs_uri", "size_bytes"],
+"additionalProperties": false,
+"properties": {
+"filename": { "type": "string" },
+"mime_type": { "type": "string" },
+"size_bytes": { "type": "integer", "minimum": 0 },
+"gcs_uri": { "type": "string", "description": "gs://my-ea-500409-attachments/... durable reference." },
+"sha256": { "type": ["string", "null"] }
+}
+}
+},
+"metadata": { "type": "object", "additionalProperties": true }
+}
+}
