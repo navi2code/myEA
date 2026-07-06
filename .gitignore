@@ -1,0 +1,21 @@
+# Secrets & credentials
+*.env
+.env.*
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs & temp
+*.log
+tmp/
+*.tmp
+
+# Node (if tooling added later)
+node_modules/
