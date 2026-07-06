@@ -1,0 +1,32 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "https://github.com/navi2code/myEA/contracts/workflow-envelope.schema.json",
+"title": "WorkflowEnvelope",
+"description": "Envelope emitted for every run type (scheduled, gmail, calendar, manual) by the trigger layer.",
+"type": "object",
+"required": ["run_id", "run_type", "correlation_id", "source", "created_at", "schema_version"],
+"additionalProperties": false,
+"properties": {
+"schema_version": { "type": "string", "const": "1.0.0" },
+"run_id": { "type": "string", "description": "ULID/UUID unique per run; primary key in run_registry." },
+"correlation_id": { "type": "string", "description": "Traces a run across all services and logs." },
+"run_type": { "type": "string", "enum": ["scheduled", "gmail", "calendar", "manual"] },
+"source": { "type": "string", "description": "Originating trigger, e.g. cloud-scheduler:gmail-primary-hourly." },
+"created_at": { "type": "string", "format": "date-time" },
+"trigger": {
+"type": "object",
+"additionalProperties": false,
+"properties": {
+"scheduler_job": { "type": ["string", "null"] },
+"schedule_cron": { "type": ["string", "null"] },
+"invoked_by": { "type": ["string", "null"] }
+}
+},
+"params": {
+"type": "object",
+"description": "Run-type specific parameters (e.g. lookback_hours for gmail).",
+"additionalProperties": true
+},
+"metadata": { "type": "object", "additionalProperties": true }
+}
+}
